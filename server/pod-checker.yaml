@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-checker
+data:
+  pod_checker.sh: |
+    #./podChecker.sh mountPath
+
+    chroot $1
+    if [ $? -ne 0 ]
+    then
+        # Return result that this pot can't chroot.
+        # In other words, can't get the shell.
+    fi
+
+    #Return result that this pot can get the shell.
+
+    # chrootは、root権限でしか実行できない
+    # すなわち、chrootで奪ったシェルはroot権限になる

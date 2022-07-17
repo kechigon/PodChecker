@@ -17,6 +17,32 @@ spec:
         name: nginx
         ports:
         - containerPort: 80
+        command: ["nginx-debug"]
+        args: ["-g", "daemon off;"]
+        volumeMounts:
+        - mountPath: /etc/nginx
+          readOnly: true
+          name: nginx-conf
+        - mountPath: /data/www
+          readOnly: true
+          name: pod-checker
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+      - name: pod-checker
+        configMap:
+          name: pod-checker
+          items:
+            - key: pod_checker.sh
+              path: pod_checker.sh
+      - name: log
+        emptyDir: {}
 
 ---
 
