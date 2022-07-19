@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastcgi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastcgi
+  template:
+    metadata:
+      labels:
+        app: fastcgi
+    spec:
+      containers:
+      - image: php:8.1.8-fpm-alpine
+        name: php-fpm
