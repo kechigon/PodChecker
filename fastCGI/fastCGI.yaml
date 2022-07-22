@@ -15,3 +15,32 @@ spec:
       containers:
       - image: php:8.1.8-fpm-alpine
         name: php-fpm
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - cp
+              - /usr/local/etc/php/php.ini-production
+              - /usr/local/etc/php/php.ini
+        volumeMounts:
+        - mountPath: /usr/local/etc/php/conf.d
+          readOnly: true
+          name: php-ini
+      volumes:
+      - name: php-ini
+        configMap:
+          name: php-ini
+          items:
+          - key: php.ini
+            path: php.ini
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-ini
+data:
+  php.ini: |
+    [PHP]
+    date.timezone = "Asia/Tokyo"
